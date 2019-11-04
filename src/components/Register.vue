@@ -57,6 +57,7 @@
 
 <script>
 import firebase from "firebase";
+import { db } from '../main'
 
 export default {
   data() {
@@ -69,7 +70,7 @@ export default {
       error: null
     };
   },
-  methods: {
+methods: {
     submit() {
       firebase
         .auth()
@@ -79,12 +80,20 @@ export default {
             .updateProfile({
               displayName: this.form.name
             })
-            .then(() => {});
+           .then(() => {
+           let userdata = {
+            username: this.form.name,
+            email: data.user.email 
+            }
+        let setDoc = db.collection('users').doc(data.user.email).set(userdata);
+        console.log("MF: data.user.displayName: ", data.user.displayName)
+        console.log("MF: this.form.name: ", this.form.name)
+     }); 
         })
         .catch(err => {
           this.error = err.message;
         });
     }
   }
-};
+}
 </script>

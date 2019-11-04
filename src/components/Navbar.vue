@@ -17,27 +17,28 @@
  <template v-if="user.loggedIn">
  <p @click="signOut" class="navbar-item is-tab">Logout</p>
           <router-link to="/dashboard" class="navbar-item is-tab">Dashboard</router-link>
+          <router-link to="/chartcontainer" class="navbar-item is-tab">Chart</router-link>
          </template>
           <template v-else>
-               
          <router-link to="/login"  class="navbar-item is-tab">Login</router-link>  
-          <router-link to="/register"  class="navbar-item is-tab">Login</router-link>
-         </template>
+                     </template>
           <router-link to="/about" class="navbar-item is-tab">About</router-link>
+          <router-link to="/test" class="navbar-item is-tab">Test</router-link>
         </div>
       </div>
     </nav>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import firebase from "firebase";
+import { mapGetters } from "vuex"
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
 export default {
   data: function() {
     return {
       isOpen: false
-          };
+          }
   },
   computed: {
     ...mapGetters({
@@ -45,18 +46,12 @@ export default {
       user: "user"
     })
   },
-
    methods: {
-    signOut() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.replace({
-            name: "home"
-          });
-        });
+    signOut() {firebase.auth().signOut().then(() => {
+          this.$router.replace({name: "home"
+          })
+        })
     }
   },
-};
+}
 </script>

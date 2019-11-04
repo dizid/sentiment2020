@@ -1,54 +1,26 @@
 <template>
-  <div>
-   <section class="hero is-primary is-fullheight">
+    <section class="hero is-primary is-fullheight">
   <div class="hero-body">
-    
-    <div class="container">
+  <div class="container">
       <div class="columns is-centered">
-       <h1 class="title">Login</h1>
+      <h1 class="title">Login</h1>
       </div>
       <div class="columns is-centered">
-        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-          <form action="#" @submit.prevent="submit">
-            <div class="field">
-              <label for="" class="label">Email</label>
-              <div class="control has-icons-left">
-                <input type="email" class="input is-primary" 
-                name="email" autocomplete="email" required 
-                v-model="form.email">
-                <span class="icon is-small is-left">
-                  <i class="fa fa-envelope"></i>
-                </span>
-              </div>
-            </div>
-            <div class="field">
-              <label for="" class="label">Password</label>
-              <div class="control has-icons-left">
-                <input type="password" class="input is-primary" 
-                name="password" autocomplete="password" required 
-                v-model="form.password">
-                <span class="icon is-small is-left">
-                  <i class="fa fa-lock"></i>
-                </span>
-              </div>
-            </div>
-              <div class="field">
-              <button class="button is-success" type="submit" >
-                Login
-              </button>
-               <router-link to="register">Register</router-link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+      
+          <section id="firebaseui-auth-container"></section>
+        
+ </div>
+    </div> <!-- END container -->
   </div>
 </section>
-  </div>
+  
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from 'firebase/app' // TODO needed here? already imported in main.js
+import 'firebase/auth'
+import * as firebaseui from 'firebaseui'
+import "firebaseui/dist/firebaseui.css"
 
 export default {
   data() {
@@ -60,18 +32,38 @@ export default {
       error: null
     };
   },
-  methods: {
+/*   methods: {
     submit() {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(data => {
-          this.$router.replace({ name: "Dashboard" });
+          this.$router.replace({ name: "Dashboard" })
         })
         .catch(err => {
-          this.error = err.message;
+          this.error = err.message
         });
+    }, // END login with email + pw */
+    
+mounted() {
+      /*   let ui = firebaseui.auth.AuthUI.getInstance();
+            if (!ui) {
+            ui = new firebaseui.auth.AuthUI(firebase.auth());
+        } */
+         var uiConfig = {
+            signInSuccessUrl: "/dashboard",
+            signInOptions: [firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ]        }
+if(firebaseui.auth.AuthUI.getInstance()) {
+      const ui = firebaseui.auth.AuthUI.getInstance()
+      ui.start('#firebaseui-auth-container', uiConfig)
+    } else {
+      const ui = new firebaseui.auth.AuthUI(firebase.auth())
+      ui.start('#firebaseui-auth-container', uiConfig)
+    }
+     // ui.start("#firebaseui-auth-container", uiConfig);
     }
   }
-};
+
 </script>
