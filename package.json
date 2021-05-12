@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bulma": "^0.8.0",
-    "chart.js": "^2.9.2",
+    "chart.js": "^2.9.4",
     "dotenv": "^8.2.0",
     "firebase": "^7.2.3",
     "firebaseui": "^4.2.0",
